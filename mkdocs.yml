@@ -5,11 +5,11 @@
 #  ANTES DE PUBLICAR: troque todas as linhas marcadas com "# TROCAR" abaixo.
 #  Passo a passo em docs/template/index.md > Publicação no GitHub Pages.
 # =============================================================================
-site_name: ANN-DL · Entregas                  # TROCAR: título exibido no topo do site
-site_author: Seu Nome, Sobrenome              # TROCAR: seu nome (ou os nomes do grupo)
-site_url: https://repo-classes.github.io/ann-dl    # TROCAR: https://<seu-usuario>.github.io/<seu-repo>
-repo_url: https://github.com/repo-classes/ann-dl/   # TROCAR: https://github.com/<seu-usuario>/<seu-repo>
-repo_name: repo-classes/ann-dl                     # TROCAR: <seu-usuario>/<seu-repo>
+site_name: ANN-DL · Projeto Online Shoppers
+site_author: Sérgio Carmelo Tôrres Filho
+site_url: https://sergioctf.github.io/ann-dl-eda-online-shoppers/
+repo_url: https://github.com/sergioctf/ann-dl-eda-online-shoppers/
+repo_name: sergioctf/ann-dl-eda-online-shoppers
 
 theme:
   name: material
@@ -142,29 +142,7 @@ extra_javascript:
 # =============================================================================
 nav:
   - Home: index.md
-  - Como usar este template: template/index.md
-
-  # A lista de entregas muda de edição para edição: acrescente ou remova itens
-  # aqui e as pastas correspondentes em docs/.
-  - Data: exercises/data/index.md
-  - Perceptron: exercises/perceptron/index.md
-  - MLP: exercises/mlp/index.md
-  - VAE: exercises/vae/index.md
-
-  # O projeto é UM só, com três entregas ao longo do semestre.
   - Projeto:
     - projects/index.md
     - 1. EDA: projects/eda/index.md
-    # Escolha UMA das duas linhas abaixo, e apague a outra (e a pasta que sobrar):
-    - 2. Classificação: projects/classification/index.md
-    - 2. Regressão: projects/regression/index.md
-    - 3. Generativo: projects/generative/index.md
-
-  # Remova esta seção inteira quando não precisar mais dos exemplos.
-  - Exemplos de uso:
-    - Como montar o menu: examples/index.md
-    - Notebook no menu: examples/notebook/data-exercise-1.ipynb
-    # TROCAR "usuario/ann-dl" pelo seu repositório, senão o link abre o notebook de outra pessoa:
-    - Abrir no Colab ↗: https://colab.research.google.com/github/usuario/ann-dl/blob/main/docs/examples/notebook/data-exercise-1.ipynb
-
-  - Enunciados da disciplina ↗: https://insper.github.io/ann-dl/
+  - Enunciado da disciplina ↗: https://insper.github.io/ann-dl/pt/2026.2/projects/eda/

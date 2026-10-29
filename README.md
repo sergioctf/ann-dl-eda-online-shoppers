@@ -1,104 +1,21 @@
-# Template de entregas — Redes Neurais Artificiais & Deep Learning
+# EDA — Redes Neurais e Deep Learning (Insper, 2026.2)
 
-Template de site (MkDocs Material + GitHub Pages) para as entregas da disciplina —
-[enunciados](https://insper.github.io/ann-dl/). Serve a **qualquer edição**: datas, pesos e a
-lista de entregas ficam no site da disciplina, não aqui.
+Repositório público do projeto individual de Sérgio Carmelo Tôrres Filho, criado a partir do [template da disciplina](https://github.com/repo-classes/ann-dl). O [relatório do EDA](docs/projects/eda/index.md) explora o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset) e prepara um pipeline para classificação binária de `Revenue`. **A proposta do dataset ainda depende de aprovação do professor; sem aprovação, o EDA não é corrigido.** Nenhum modelo é treinado nesta etapa.
 
-Cada entrega é um item de menu, e o alvo do item pode ser um relatório em Markdown, um
-notebook `.ipynb` ou um link do Google Colab. Os três casos estão demonstrados na seção
-**Exemplos de uso** do site.
+## Reproduzir
 
-## Estrutura
+Use Python 3.11 ou superior, a partir da raiz do repositório:
 
-```
-docs/
-  index.md                     # capa: grupo e status das entregas
-  template/index.md            # como usar este template
-  exercises/
-    data/{index.md,code/,figures/}
-    perceptron/{index.md,code/,figures/}
-    mlp/{index.md,code/,figures/}
-    vae/{index.md,code/,figures/}
-  projects/
-    index.md                   # equipe, dataset, decisões, status
-    eda/{index.md,code/,figures/}
-    classification/{index.md,code/,figures/}
-    regression/{index.md,code/,figures/}
-    generative/{index.md,code/,figures/}
-  examples/                    # exemplos de uso do menu (pode ser removido)
+```powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python docs/projects/eda/code/eda_analysis.py
+.venv\Scripts\python docs/projects/eda/code/test_preprocessing.py
+.venv\Scripts\mkdocs build --strict
 ```
 
-Os slugs de `exercises/` e `projects/` são fixos e casam com o site da disciplina. Não os
-renomeie.
+Em Linux/macOS, ative a `.venv` e substitua os caminhos `.venv\Scripts\` por `.venv/bin/`. O script lê o [CSV versionado](docs/projects/eda/data/online_shoppers_intention.csv), usa `random_state=42`, gera as figuras em `docs/projects/eda/figures/` e as tabelas/medidas em `docs/projects/eda/outputs/`. O pipeline importável está em [preprocessing.py](docs/projects/eda/code/preprocessing.py). Não depende de download durante a execução.
 
-Cada entrega tem a própria pasta, sempre no mesmo formato: `index.md` para o relatório,
-`code/` para os scripts e `figures/` para as imagens. Um notebook entra na mesma pasta,
-como `index.ipynb`.
+## Fonte e licença
 
-Os nomes do grupo vão em [docs/projects/index.md](docs/projects/index.md) e se repetem no
-cabeçalho de cada entrega do projeto.
-
-## As entregas
-
-O conjunto abaixo é o das edições recentes; confira o overview da **sua** edição e ajuste as
-pastas em `docs/` junto com a `nav` do `mkdocs.yml`.
-
-- **Exercícios**, individuais: Data, Perceptron, MLP, VAE.
-- **Projeto**, em equipe: um único dataset em três entregas — EDA, Classificação **ou**
-  Regressão, e Generativo.
-
-O template traz as pastas de classificação e regressão; apague a que a equipe não escolher,
-da pasta e da `nav`.
-
-## Setup
-
-```shell
-python3 -m venv env
-source ./env/bin/activate          # Windows: .\env\Scripts\activate
-python3 -m pip install -r requirements.txt --upgrade
-```
-
-## Rodando localmente
-
-```shell
-mkdocs serve -o
-```
-
-## Publicação
-
-O workflow em [.github/workflows/main.yaml](.github/workflows/main.yaml) roda
-`mkdocs gh-deploy --force` a cada push na `main`: ele constrói o HTML, empurra para a branch
-`gh-pages`, e é essa branch que o GitHub Pages serve.
-
-Configuração inicial, uma vez:
-
-1. **Se você forkou**, habilite os workflows na aba **Actions** (forks vêm com o Actions
-   desligado). Usando *Use this template* isso não é necessário.
-2. Troque no [mkdocs.yml](mkdocs.yml) todas as linhas marcadas com `# TROCAR`
-   (`grep -n TROCAR mkdocs.yml`).
-3. Nada a fazer quanto a permissões: o workflow já declara `permissions: contents: write`.
-   Só se o build falhar com `Permission denied to github-actions[bot]` vá em
-   **Settings → Actions → General → Workflow permissions** → **Read and write permissions**.
-4. Dê o primeiro push e espere o run terminar — é ele que cria a branch `gh-pages`.
-5. **Settings → Pages** → *Deploy from a branch* → branch **`gh-pages`**, pasta **`/ (root)`**.
-   Apontar o Pages para a `main` publica o Markdown cru, não o site.
-
-O passo a passo com as telas está em
-[Como usar este template → Publicação no GitHub Pages](docs/template/index.md).
-
-Antes de dar push, valide localmente — o CI publica mesmo com avisos, o modo estrito não:
-
-```shell
-mkdocs build --strict
-```
-
-Para publicar manualmente, sem passar pelo CI:
-
-```shell
-mkdocs gh-deploy
-```
-
-## Prazo
-
-O prazo de uma entrega é o **timestamp do último commit que toca a pasta daquela entrega**
-— não a hora do formulário nem a da publicação. Commite progressivamente.
+Sakar & Kastro (2018), *Online Shoppers Purchasing Intention Dataset*, UCI Machine Learning Repository, [DOI 10.24432/C5F88Q](https://doi.org/10.24432/C5F88Q), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). A cópia do CSV tem SHA-256 `b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9`.

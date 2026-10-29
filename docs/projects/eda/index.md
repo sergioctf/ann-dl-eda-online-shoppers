@@ -1,152 +1,228 @@
 ---
 project: eda
-ai_use: "none"
+task: classification
+dataset: https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset
+team:
+  - Sérgio Carmelo Tôrres Filho
+ai_use: "AI used for helping with de organization and code"
 ---
 
-# 1. EDA — Análise Exploratória
+# Projeto 1 — Análise exploratória de dados
 
-!!! abstract "Entrega 1 de 3 do [Projeto](../index.md)"
+**Equipe:** Sérgio Carmelo Tôrres Filho · **Tarefa:** classificação binária de `Revenue` · **Semente:** 42. Este relatório prepara os dados para uma futura rede neural; **nenhum modelo foi treinado nesta entrega**. O [CSV original](data/online_shoppers_intention.csv), o [código executado](code/eda_analysis.py) e as [saídas calculadas](outputs/metrics.json) estão no repositório.
 
-    [Projects](https://insper.github.io/ann-dl/){:target='_blank'}
+## 0. Proposta
 
-!!! info "Equipe"
+**Aprovação do professor: pendente.** O [enunciado](https://insper.github.io/ann-dl/pt/2026.2/projects/eda/) exige proposta aprovada como pré-requisito de correção. Este é, portanto, um trabalho preparatório, **não uma entrega válida até a aprovação**. Caso o professor rejeite a base, será necessário trocá-la antes da entrega.
 
-    | Nome completo | GitHub |
-    |---------------|--------|
-    | | |
-    | | |
-    | | |
+Proponho o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset), da UCI: **12.330 sessões × 18 colunas**, sendo **17 features (10 numéricas, 7 categóricas)** e o alvo booleano `Revenue`, presente no arquivo. Cada linha representa uma sessão de um usuário distinto durante um ano, segundo a fonte. A tarefa é prever se a sessão termina em compra. A base é pública, tabular, mista, excede 1.000 instâncias/5 features e não é uma das bases clássicas proibidas. A motivação é estudar a interação entre comportamento de navegação, sazonalidade e compra num cenário real. O risco inicial é o desbalanceamento da compra (**15,47%**), junto à possível indisponibilidade temporal de `PageValues`. A mesma base será usada na etapa de classificação **se aprovada**.
 
-    Dataset, decisões e status: [página do projeto](../index.md).
+## 1. Inspeção inicial
 
-!!! tip "O que esta entrega decide"
+### A — Dicionário de dados
 
-    O EDA não é um álbum de gráficos: é onde a equipe **escolhe o dataset** e descobre o que
-    vai atrapalhar o treino depois — desbalanceamento, vazamento, escalas incompatíveis com a
-    ativação, ausências não aleatórias. Cada achado aqui deve virar uma linha do plano de
-    pré-processamento no fim da página, e é esse plano que as duas entregas
-    seguintes executam.
+A [UCI](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset) descreve métricas agregadas da sessão e do site. Não declara a unidade das durações; por isso não a presumo. Os códigos de sistema, navegador, região e tráfego são categorias, não números ordenados. O CSV commitado tem SHA-256 `b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9`.
 
-    As aulas de **Classes → Data** no
-    [site da disciplina](https://insper.github.io/ann-dl/){:target='_blank'} dão a estrutura:
-    tipos, distribuições, qualidade, desbalanceamento, vazamento, split e pré-processamento.
+| Coluna | Significado | Tipo | Unidade/escala |
+|---|---|---|---|
+| `Administrative` | Páginas administrativas visitadas | Numérica discreta | Páginas |
+| `Administrative_Duration` | Tempo total nelas | Numérica contínua | Tempo; unidade não informada |
+| `Informational` | Páginas informativas visitadas | Numérica discreta | Páginas |
+| `Informational_Duration` | Tempo total nelas | Numérica contínua | Tempo; unidade não informada |
+| `ProductRelated` | Páginas de produto visitadas | Numérica discreta | Páginas |
+| `ProductRelated_Duration` | Tempo total nelas | Numérica contínua | Tempo; unidade não informada |
+| `BounceRates` | Taxa média de rejeição das páginas | Numérica contínua | Proporção, 0–1 |
+| `ExitRates` | Taxa média de saída das páginas | Numérica contínua | Proporção, 0–1 |
+| `PageValues` | Valor médio de páginas segundo analytics | Numérica contínua | Valor; unidade monetária não informada |
+| `SpecialDay` | Proximidade de data especial | Numérica contínua | Escore, 0–1 |
+| `Month` | Mês da sessão | Categórica nominal | Categoria textual |
+| `OperatingSystems` | Código do sistema operacional | Categórica nominal | Código |
+| `Browser` | Código do navegador | Categórica nominal | Código |
+| `Region` | Código da região | Categórica nominal | Código |
+| `TrafficType` | Código da origem de tráfego | Categórica nominal | Código |
+| `VisitorType` | Tipo de visitante | Categórica nominal | Categoria textual |
+| `Weekend` | Sessão em fim de semana | Categórica binária | Booleano |
+| `Revenue` | Sessão terminou em compra | **Alvo binário** | `False`/`True` |
 
-## 1. Dataset
+### B — Qualidade
 
-Nome, fonte, licença, dimensões e **por que** este dataset. Se houve troca em relação a uma
-ideia anterior, diga qual e por quê.
+**Faltantes:** **0 de 12.330 (0,00%) em cada uma das 18 colunas**. A [contagem por coluna](outputs/missing_values.csv) está versionada; a tabela explicita cada verificação.
 
-## 2. Estrutura e tipos
+| Coluna | n | % | Coluna | n | % |
+|---|---:|---:|---|---:|---:|
+| `Administrative` | 0 | 0,00 | `Administrative_Duration` | 0 | 0,00 |
+| `Informational` | 0 | 0,00 | `Informational_Duration` | 0 | 0,00 |
+| `ProductRelated` | 0 | 0,00 | `ProductRelated_Duration` | 0 | 0,00 |
+| `BounceRates` | 0 | 0,00 | `ExitRates` | 0 | 0,00 |
+| `PageValues` | 0 | 0,00 | `SpecialDay` | 0 | 0,00 |
+| `Month` | 0 | 0,00 | `OperatingSystems` | 0 | 0,00 |
+| `Browser` | 0 | 0,00 | `Region` | 0 | 0,00 |
+| `TrafficType` | 0 | 0,00 | `VisitorType` | 0 | 0,00 |
+| `Weekend` | 0 | 0,00 | `Revenue` | 0 | 0,00 |
 
-Quantas amostras, quantas features, e o tipo de cada uma (numérica contínua, discreta,
-categórica nominal, ordinal, data, texto). Aponte as que estão com o tipo errado no arquivo
-bruto — um CEP lido como inteiro é numérico para o pandas e categórico para o modelo.
+Há **125 linhas idênticas (1,01%)**, inclusive no alvo; também são 125 se `Revenue` for ignorado. A UCI informa que as sessões pertencem a usuários distintos; igualdade dos agregados não prova repetição do registro. Por isso **mantive as sessões** e agrupei assinaturas idênticas na separação (1D), confirmando **0 assinaturas compartilhadas** entre treino e teste.
 
-| Feature | Tipo | Cardinalidade / faixa | Observação |
-|---------|------|-----------------------|------------|
-| | | | |
+Verificações de impossibilidade: **0** contagens/durações negativas, **0** `PageValues` negativos, **0** taxas fora de 0–1, **0** códigos categóricos não positivos, **0** meses desconhecidos e **0** células textuais vazias. Não há identificador nem coluna constante. A única coluna descartada é **`PageValues`**: a UCI relaciona a métrica ao valor de páginas antes de uma transação, mas não documenta sua disponibilidade no **instante de previsão**. No treino, a média é **27,13** para compra contra **2,02** para não compra (medianas **16,34** e **0,00**). Essa associação não prova vazamento; a exclusão é conservadora até haver confirmação temporal operacional.
 
-## 3. Variável alvo
+### C — Alvo
 
-Distribuição do alvo e o que ela implica.
+No dataset completo, `Revenue=False` tem **10.422 sessões (84,53%)** e `Revenue=True`, **1.908 (15,47%)**. A razão é **5,46:1**. A futura modelagem deverá avaliar a classe positiva e comparar com a linha de base majoritária, não só reportar acurácia.
 
-- **Classificação:** proporção por classe, razão entre a maior e a menor.
-- **Regressão:** distribuição, assimetria, cauda, presença de zeros ou censura.
+![Figura 1 — Frequência das classes no dataset completo](figures/figure_01_target.png)
 
-![Distribuição da variável alvo](figures/fig01-exemplo.svg)
-/// caption
-**Figura 1** — Distribuição da variável alvo.
-///
+**Conclusão da Figura 1:** prever sempre “sem compra” alcançaria 84,53% sem aprender intenção de compra; o desbalanceamento é substantivo.
 
-!!! question "Responda"
+### D — Treino e teste
 
-    O quão desbalanceado está? Um classificador que sempre responde a classe majoritária
-    acerta quantos por cento? Esse número é o seu *baseline* — as entregas seguintes precisam
-    superá-lo.
+Antes de ajustar imputação, limites, escalas, encoding ou PCA, usei a primeira divisão de `StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)`, estratificada por `Revenue` e agrupada pelo hash das 17 features. A divisão **80%/20%** preserva aproximadamente a proporção de compra e impede que linhas com features iguais apareçam dos dois lados. São **9.864 sessões no treino (1.526 compras; 15,47%)** e **2.466 no teste (382 compras; 15,49%)**. Não há data individual para corte temporal; `Month` não ordena as sessões dentro do ano. O teste é reservado à avaliação futura. A análise adiante e todo `fit` usam somente treino; isto não mede generalização para outro período ou loja.
 
-## 4. Análise univariada
+## 2. Análise univariada
 
-Distribuição de cada feature relevante: medidas de posição e dispersão, e o formato.
-Não gere 40 histogramas; escolha os que mudam alguma decisão e explique o critério.
+### A — Numéricas
 
-## 5. Análise bivariada e correlações
+A Tabela 1 é calculada nas **9.864 linhas de treino**, antes de transformação. O [CSV completo](outputs/numeric_summary.csv) inclui mínimo, máximo, zeros, assimetria e P99.
 
-Relação entre as features e o alvo, e entre as features.
+**Tabela 1 — Estatísticas das dez numéricas no treino (aproximações).**
 
-!!! danger "Correlação alta demais com o alvo é suspeita"
+| Feature | Média | Mediana | Desvio | Q1 | Q3 |
+|---|---:|---:|---:|---:|---:|
+| `Administrative` | 2,299 | 1,000 | 3,311 | 0,000 | 4,000 |
+| `Administrative_Duration` | 80,102 | 8,000 | 177,398 | 0,000 | 91,989 |
+| `Informational` | 0,508 | 0,000 | 1,284 | 0,000 | 0,000 |
+| `Informational_Duration` | 34,340 | 0,000 | 141,242 | 0,000 | 0,000 |
+| `ProductRelated` | 31,707 | 18,000 | 45,169 | 7,000 | 37,000 |
+| `ProductRelated_Duration` | 1.197,575 | 599,000 | 1.962,745 | 183,500 | 1.474,531 |
+| `BounceRates` | 0,0221 | 0,0031 | 0,0485 | 0,0000 | 0,0167 |
+| `ExitRates` | 0,0430 | 0,0251 | 0,0486 | 0,0143 | 0,0500 |
+| `SpecialDay` | 0,0599 | 0,0000 | 0,1968 | 0,0000 | 0,0000 |
+| `PageValues` | 5,905 | 0,000 | 18,539 | 0,000 | 0,000 |
 
-    Uma feature que prevê o alvo quase perfeitamente costuma ser **vazamento**: informação
-    que só existe depois do fato que você quer prever. Investigue antes de comemorar.
+As Figuras 2–3 cobrem **todas** as numéricas em duas figuras. Contagens/durações e `PageValues` aparecem em `log(1+x)` **somente para visualização**; as densidades das classes são normalizadas separadamente, portanto não indicam prevalência.
 
-## 6. Qualidade dos dados
+![Figura 2 — Distribuição de contagens e durações no treino](figures/figure_02_numeric_skewed.png)
 
-### Valores ausentes
+**Conclusão da Figura 2:** as seis variáveis são assimétricas à direita, com muitos zeros. `Informational_Duration` é zero em **80,41%** do treino; `ProductRelated_Duration` vai até **63.973,52**, contra mediana **599,00**. A cauda justifica compressão e limite superior robusto sem eliminar sessões.
 
-| Feature | % ausente | Padrão (aleatório?) | Tratamento planejado |
-|---------|-----------|---------------------|----------------------|
-| | | | |
+![Figura 3 — Distribuição de taxas, proximidade e PageValues no treino](figures/figure_03_numeric_other.png)
 
-Ausência raramente é aleatória. Se falta mais em um grupo do que em outro, o próprio "estar
-ausente" carrega informação.
+**Conclusão da Figura 3:** `BounceRates`/`ExitRates` se concentram perto de zero; **90,10%** de `SpecialDay` e **77,79%** de `PageValues` são zero. `PageValues` tem cauda até **361,76**, mas sua exclusão do pipeline se deve ao risco temporal de 1B. Picos discretos não são tomados como modos de uma distribuição contínua.
 
-### Duplicatas e inconsistências
+### B — Categóricas
 
-Linhas repetidas, categorias escritas de formas diferentes, unidades misturadas, datas
-impossíveis.
+Defini “rara” como categoria com menos de **1% das 9.864 sessões**. A Tabela 2 resume **todas as sete features**; a [frequência de cada uma de suas categorias, com contagem e percentual](outputs/categorical_frequencies.csv) está commitada para consulta.
 
-### Outliers
+**Tabela 2 — Cardinalidade e frequências dominantes no treino.**
 
-Como foram detectados e o que será feito com eles — e por quê. Remover outlier é decisão de
-modelagem, não faxina.
+| Feature | Categorias | Mais frequente (n; %) | Categorias <1% |
+|---|---:|---|---:|
+| `Month` | 10 | `May` (2.655; 26,92%) | 0 |
+| `OperatingSystems` | 8 | `2` (5.269; 53,42%) | 4 |
+| `Browser` | 13 | `2` (6.378; 64,66%) | 6 |
+| `Region` | 9 | `1` (3.802; 38,54%) | 0 |
+| `TrafficType` | 19 | `2` (3.156; 32,00%) | 8 |
+| `VisitorType` | 3 | `Returning_Visitor` (8.413; 85,29%) | 1 (`Other`) |
+| `Weekend` | 2 | `False` (7.542; 76,46%) | 0 |
 
-## 7. Riscos de vazamento
+![Figura 4 — Frequência de categorias selecionadas no treino](figures/figure_04_categorical.png)
 
-Liste as fontes de vazamento identificadas e como cada uma será contida.
+**Conclusão da Figura 4:** `Month` é sazonal e `VisitorType` dominada por recorrentes. `TrafficType` tem a maior cardinalidade (**19**) e oito códigos raros; `Browser` tem **13** e seis raros. Para não sobrecarregar a figura, ela mostra quatro features; a Tabela 2 e o CSV cobrem as sete. Códigos categóricos não devem entrar como números contínuos na rede.
 
-``` mermaid
-flowchart LR
-    raw[Dados brutos] --> split{{split treino/teste}}
-    split -->|treino| fit["fit_transform<br/>(estatísticas saem só daqui)"]
-    split -->|teste| apply[transform]
-    fit --> model[Modelo]
-    apply --> model
-```
+## 3. Análise bivariada e multivariada
 
-| Risco | Onde aparece | Contenção |
-|-------|--------------|-----------|
-| Estatísticas calculadas antes do split | | Ajustar transformadores só no treino |
-| | | |
+### A — Numérica × numérica
 
-## 8. Plano de pré-processamento
+Usei **Spearman** no treino porque a Tabela 1/Figuras 2–3 mostram caudas, muitos zeros e possível associação monotônica não linear. A [matriz de correlação completa](outputs/spearman_correlations.csv) acompanha o mapa.
 
-A saída desta entrega. Uma linha por transformação, ligando cada uma a um achado acima.
+![Figura 5 — Correlação de Spearman no treino](figures/figure_05_spearman.png)
 
-| # | Transformação | Features | Motivo (seção) |
-|---|---------------|----------|----------------|
-| 1 | | | |
+**Conclusão da Figura 5:** `Informational` × `Informational_Duration` é o par mais associado, **ρ=0,9504**: mais páginas informativas quase sempre implicam mais tempo nelas, indicando redundância parcial. `BounceRates` × `ExitRates` tem **ρ=0,6014**, mas não é duplicata. Não removi variáveis apenas por correlação; isso pede ablação no treino/validação futura.
 
-## 9. Estratégia de split
+![Figura 6 — Pares numéricos em dispersão](figures/figure_06_bounce_exit.png)
 
-Proporções, estratificação, e o que impede uma mesma entidade de cair nos dois lados
-(agrupamento por usuário, por data, por sessão).
+**Conclusão da Figura 6:** o primeiro par tem relação monotônica e muitos empates em zero, compatíveis com ρ alto sem equivalência perfeita. O segundo tem associação positiva com dispersão. As classes se sobrepõem nos dois planos, então essas duplas não separam o alvo sozinhas. Para legibilidade foi usada uma amostra fixa de **3.000 sessões do treino**.
 
-## Results summary
+### B — Categórica × alvo
 
-| # | Métrica | Valor |
-|---|---------|-------|
-| 1 | Amostras | |
-| 2 | Features (antes / depois do encoding) | |
-| 3 | Features com ausentes | |
-| 4 | Maior % de ausência em uma feature | |
-| 5 | Linhas duplicadas | |
-| 6 | Razão de desbalanceamento do alvo | |
-| 7 | Acurácia (ou erro) do baseline trivial | |
-| 8 | Maior correlação feature–alvo | |
-| 9 | Amostras treino / teste após o split | |
+A Figura 7 exibe composição por categoria. A [tabela de taxas de compra das categorias de **todas** as sete features](outputs/category_target_rates.csv) inclui contagens, evitando interpretar um percentual extremo baseado em pouquíssimas sessões como padrão estável.
 
-## Conclusão
+![Figura 7 — Proporção das classes por categoria](figures/figure_07_category_target.png)
 
-O que o dataset permite e o que ele impede. Se algum achado inviabiliza a tarefa pretendida,
-é aqui que a equipe muda de rumo — ainda dá tempo.
+**Conclusão da Figura 7:** em novembro houve compra em **25,50%** das sessões (**2.416** linhas), contra **1,46%** em fevereiro (**137**). `New_Visitor` tem **25,07%** (**1.376**) e `Returning_Visitor`, **13,86%** (**8.413**). Em `Weekend`, as taxas são **17,44%** (**2.322**) e **14,86%** (**7.542**). São associações, não efeitos causais; taxas de códigos raros são incertas.
 
-## Referências
+### C — Numérica × categórica
+
+Comparei tempo de páginas de produto por `VisitorType` e `ExitRates` por `Weekend`, colorindo também pelo alvo. Outliers foram **ocultados apenas nos boxplots**, não removidos dos dados.
+
+![Figura 8 — Boxplots numérica × categórica](figures/figure_08_numeric_category.png)
+
+**Conclusão da Figura 8:** entre recorrentes, a mediana de `ProductRelated_Duration` é **1.341,63** nas compras contra **568,48** nas não compras; os IQRs são **651,19–2.678,39** contra **157,00–1.457,01**, indicando diferença de **posição e espalhamento**. Em dias úteis, a mediana de `ExitRates` cai de **0,0294** (sem compra) para **0,0159** (compra), com IQR **0,0161–0,0560** contra **0,0096–0,0250**: também diferem posição e dispersão. `VisitorType=Other` tem só **75** sessões, logo seu boxplot é instável.
+
+## 4. Pré-processamento
+
+### A — Estratégias
+
+| Tema | Achado | Estratégia, sempre ajustada no treino |
+|---|---|---|
+| Faltantes | 0 agora (1B), mas dados futuros podem faltar | `SimpleImputer(median)` nas numéricas e `most_frequent` nas categóricas. |
+| Outliers/caudas | `ProductRelated_Duration`: máximo 63.973,52, mediana 599,00 (Tabela 1) | Nas seis contagens/durações, limitar no P99 do treino e aplicar `log1p`. **391/9.864 linhas (3,96%)** afetadas; nenhuma removida. |
+| Categorias | Códigos não ordinais; `TrafficType` com 19 categorias (Tabela 2) | One-hot com `handle_unknown="ignore"`; categoria inédita no teste vira zeros no seu bloco. |
+| Escala | Durações em milhares, taxas até 0,2 (Tabela 1) | `StandardScaler` após `log1p` e nas três numéricas limitadas. |
+
+Os limites aprendidos no treino foram `Administrative` **14**, `Administrative_Duration` **825,35**, `Informational` **6**, `Informational_Duration` **724,56**, `ProductRelated` **223,37** e `ProductRelated_Duration` **8.898,10**. **391** conta linhas únicas; algumas excedem mais de um limite. O P99 é uma escolha conservadora, não alegação de erro de coleta. `PageValues` fica de fora por risco temporal (1B), não por ser outlier. O alvo não foi reamostrado; eventual ponderação pertence apenas ao treinamento do futuro classificador.
+
+### B — Redução de dimensionalidade
+
+As três projeções usam as **73 features transformadas do treino**. PCA foi ajustada nas **9.864** linhas; PCA, t-SNE e UMAP mostram a **mesma amostra estratificada de 1.500 linhas do treino** (**1.268 sem compra; 232 compras**). O teste não entrou em nenhum ajuste. As projeções 2D servem para diagnóstico visual, não substituem automaticamente o conjunto completo de features.
+
+![Figura 9 — PCA e variância explicada acumulada](figures/figure_09_pca.png)
+
+**Conclusão da Figura 9:** PC1 explica **32,48%** e PC2 **13,18%**, juntas **45,66%**. Dez componentes chegam a **80,06%**. Pelos [loadings](outputs/pca_loadings.csv), PC1 pesa `ProductRelated_Duration` **+0,4100**, `ExitRates` **−0,3928** e `ProductRelated` **+0,3908**; PC2 pesa `Informational` **+0,5247**, `Informational_Duration` **+0,5220** e `BounceRates` **+0,4052**. O sinal de um eixo PCA é arbitrário; importa a contribuição relativa. Compras e não compras se sobrepõem amplamente.
+
+![Figura 10 — t-SNE com duas perplexidades](figures/figure_10_tsne.png)
+
+**Conclusão da Figura 10:** `perplexity=30` e **80** expõem agrupamentos locais que a PCA comprime. A disposição muda, mas **não aparece região pura de compras**; as cores seguem misturadas. Não interpreto distâncias ou áreas entre ilhas como distância global ou tamanho real de grupos.
+
+![Figura 11 — UMAP com dois tamanhos de vizinhança](figures/figure_11_umap.png)
+
+**Conclusão da Figura 11:** `n_neighbors=15` ressalta subgrupos menores, enquanto **50** agrega parte deles. Como t-SNE, mostra estrutura local não aparente na projeção linear, sem separar classes. Ilhas podem refletir categorias e zeros estruturais, não necessariamente perfis de compra; seu tamanho e separação visual não medem prevalência nem distância original.
+
+### C — Pipeline
+
+O arquivo importável [preprocessing.py](code/preprocessing.py) define `build_preprocessor()`: `ColumnTransformer` com `Pipeline` numérico e categórico, sem ajustar nada ao importar. O [script de análise](code/eda_analysis.py) faz `fit_transform` **apenas no treino** e `transform` no teste. Os `shape`s são **(9.864, 73)** e **(2.466, 73)**, com **0 NaN** e **0 infinito** em ambos. São 6 contagens/durações transformadas, 3 numéricas limitadas e 64 indicadores one-hot. `Revenue` e `PageValues` não entram em `X`.
+
+Os [73 nomes produzidos pelo `ColumnTransformer`](outputs/feature_names.csv) estão versionados, em sua ordem, com prefixos `skew__`, `bounded__` e `cat__`; incluem `skew__ProductRelated_Duration`, `bounded__ExitRates`, `cat__Month_Nov`, `cat__TrafficType_20` e `cat__Weekend_True`. O CSV é a lista completa, não uma reconstrução manual. Uma categoria nova mantém o mesmo `shape` graças a `handle_unknown="ignore"`.
+
+Para reproduzir de um clone limpo: instale `requirements.txt` e execute `python docs/projects/eda/code/eda_analysis.py` na raiz. O script lê o CSV commitado, verifica o split e gera Figuras 1–11 e tabelas em `outputs/`. [test_preprocessing.py](code/test_preprocessing.py) testa o pipeline. Os dois blocos abaixo incorporam o **código-fonte executável** dos arquivos, não uma cópia independente.
+
+??? example "Código completo — pipeline"
+
+    ```python
+    --8<-- "docs/projects/eda/code/preprocessing.py"
+    ```
+
+??? example "Código completo — análise e figuras"
+
+    ```python
+    --8<-- "docs/projects/eda/code/eda_analysis.py"
+    ```
+
+## 5. Síntese
+
+Para modelagem futura: **(i)** compra é minoritária (**15,47%**, Figura 1), exigindo métricas da classe positiva; **(ii)** caudas e zeros nas durações (Tabela 1/Figura 2) justificam P99, `log1p` e padronização; **(iii)** mês e tipo de visitante variam nas taxas (Figura 7), mas categorias raras e ausência de validação temporal limitam extrapolação. Dois PCs retêm só **45,66%** (Figura 9); t-SNE/UMAP revelam estrutura local, não classes limpas. `PageValues` foi excluída por risco temporal (1B). **Não há resultado preditivo**, pois nenhum classificador foi treinado.
+
+**Próximo passo e limites:** obter **aprovação formal do dataset** antes da entrega, manter a base na classificação se aprovada, definir o instante da predição, ajustar modelos somente no treino/validação e reservar o teste para avaliação final. A prorrogação informada pelo aluno deve ser confirmada pelo canal oficial da disciplina; esta análise não a comprova. Fonte: Sakar & Kastro, *Online Shoppers Purchasing Intention Dataset* (UCI, 2018), DOI [10.24432/C5F88Q](https://doi.org/10.24432/C5F88Q), licença [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+### Resumo dos resultados
+
+| # | Resumo dos resultados | Valor |
+|---:|---|---|
+| 1 | Dataset, tarefa e alvo | Online Shoppers Purchasing Intention; classificação; `Revenue` (`True`/`False`) |
+| 2 | Instâncias × features (numéricas / categóricas) | **12.330 × 17** (**10 / 7**); mais 1 alvo |
+| 3 | Coluna com mais faltantes e seu percentual | Empate entre todas: **0 (0,00%)** |
+| 4 | Colunas descartadas e o motivo | `PageValues`: disponibilidade pré-compra não demonstrada; possível vazamento temporal |
+| 5 | Classe minoritária (%) | `Revenue=True`: **1.908 / 12.330 (15,47%)** |
+| 6 | Tamanho do treino e do teste | **9.864 / 2.466** (80% / 20%) |
+| 7 | Par de numéricas mais correlacionado e valor | `Informational` × `Informational_Duration`: **Spearman ρ=0,9504** |
+| 8 | Linhas afetadas pela estratégia de outliers | **391 / 9.864 (3,96%)** no treino; nenhuma removida |
+| 9 | Variância explicada por PC1 + PC2 | **45,66%** (32,48% + 13,18%) |
+| 10 | `shape` do treino e do teste após o pipeline | **(9.864, 73)** e **(2.466, 73)**; 0 NaN |

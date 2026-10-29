@@ -1,5 +1,8 @@
 site/
 env/
+.venv/
+__pycache__/
+*.pyc
 .cache/
 .vscode/
 target/
