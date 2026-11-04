@@ -129,7 +129,7 @@ Defini “rara” como categoria com menos de **1% das 9.864 sessões**. A Tabel
 
 ![Figura 4 — Frequência de categorias selecionadas no treino](figures/figure_04_categorical.png)
 
-**Conclusão da Figura 4:** `Month` é sazonal e `VisitorType` dominada por recorrentes. `TrafficType` tem a maior cardinalidade (**19**) e oito códigos raros; `Browser` tem **13** e seis raros. Para não sobrecarregar a figura, ela mostra quatro features; a Tabela 2 e o CSV cobrem as sete. Códigos categóricos não devem entrar como números contínuos na rede.
+**Conclusão da Figura 4:** `Month` varia em volume e `VisitorType` é dominada por recorrentes. Há registros de **dez meses**, mas **janeiro e abril não aparecem**; não se pode inferir ausência real de visitantes nesses meses nem projetar sazonalidade para o ano inteiro. `TrafficType` tem a maior cardinalidade (**19**) e oito códigos raros; `Browser` tem **13** e seis raros. Para não sobrecarregar a figura, ela mostra quatro features; a Tabela 2 e o CSV cobrem as sete. Códigos categóricos não devem entrar como números contínuos na rede.
 
 ## 3. Análise bivariada e multivariada
 
