@@ -47,6 +47,16 @@ def save_figure(fig: plt.Figure, filename: str) -> None:
     plt.close(fig)
 
 
+def save_markdown_table(filename: str, headers: list[str], rows: list[list[str]]) -> None:
+    """Gera uma tabela inspecionável que o relatório inclui sem copiá-la à mão."""
+    content = [
+        "| " + " | ".join(headers) + " |",
+        "|" + "|".join("---" for _ in headers) + "|",
+    ]
+    content.extend("| " + " | ".join(row) + " |" for row in rows)
+    (OUTPUTS / filename).write_text("\n".join(content) + "\n", encoding="utf-8")
+
+
 def class_histogram(ax, frame: pd.DataFrame, column: str, log1p: bool) -> None:
     for label in (False, True):
         values = frame.loc[frame["Revenue"] == label, column].astype(float)
@@ -383,6 +393,14 @@ def main() -> None:
                 "pct": float(count / len(train) * 100),
             })
     pd.DataFrame(categorical_rows).to_csv(OUTPUTS / "categorical_frequencies.csv", index=False)
+    save_markdown_table(
+        "categorical_frequencies.txt",
+        ["Feature", "Categoria", "Sessões", "% do treino"],
+        [
+            [row["feature"], row["category"], str(row["count"]), f'{row["pct"]:.2f}'.replace(".", ",")]
+            for row in categorical_rows
+        ],
+    )
 
     correlations = train[ALL_NUMERIC].corr(method="spearman")
     correlations.to_csv(OUTPUTS / "spearman_correlations.csv", index_label="feature")
@@ -406,6 +424,11 @@ def main() -> None:
     assert np.isfinite(x_train_t).all() and np.isfinite(x_test_t).all()
     names = preprocess.get_feature_names_out()
     pd.DataFrame({"feature_name": names}).to_csv(OUTPUTS / "feature_names.csv", index=False)
+    save_markdown_table(
+        "feature_names.txt",
+        ["#", "Feature após o pipeline"],
+        [[str(index), f"`{name}`"] for index, name in enumerate(names, start=1)],
+    )
     caps = preprocess.named_transformers_["skew"].named_steps["cap"].upper_
     train_skewed = train[SKEWED_NUMERIC].to_numpy(dtype=float)
     cap_flags = train_skewed > caps

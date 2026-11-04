@@ -13,9 +13,9 @@ ai_use: "AI used for helping with de organization and code"
 
 ## 0. Proposta
 
-**Aprovação do professor: pendente.** O [enunciado](https://insper.github.io/ann-dl/pt/2026.2/projects/eda/) exige proposta aprovada como pré-requisito de correção. Este é, portanto, um trabalho preparatório, **não uma entrega válida até a aprovação**. Caso o professor rejeite a base, será necessário trocá-la antes da entrega.
+**Aprovação do professor:** o integrante informou em **04/11/2026** que a base foi aprovada. O [enunciado](https://insper.github.io/ann-dl/pt/2026.2/projects/eda/) exige aprovação como pré-requisito de correção. O comprovante não foi anexado ao repositório; esta informação registra a confirmação recebida do aluno.
 
-Proponho o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset), da UCI: **12.330 sessões × 18 colunas**, sendo **17 features (10 numéricas, 7 categóricas)** e o alvo booleano `Revenue`, presente no arquivo. Cada linha representa uma sessão de um usuário distinto durante um ano, segundo a fonte. A tarefa é prever se a sessão termina em compra. A base é pública, tabular, mista, excede 1.000 instâncias/5 features e não é uma das bases clássicas proibidas. A motivação é estudar a interação entre comportamento de navegação, sazonalidade e compra num cenário real. O risco inicial é o desbalanceamento da compra (**15,47%**), junto à possível indisponibilidade temporal de `PageValues`. A mesma base será usada na etapa de classificação **se aprovada**.
+O dataset escolhido é o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset), da UCI: **12.330 sessões × 18 colunas**, sendo **17 features (10 numéricas, 7 categóricas)** e o alvo booleano `Revenue`, presente no arquivo. Cada linha representa uma sessão de um usuário distinto durante um ano, segundo a fonte. A tarefa é prever se a sessão termina em compra. A base é pública, tabular, mista, excede 1.000 instâncias/5 features e não é uma das bases clássicas proibidas. A motivação é estudar a interação entre comportamento de navegação, sazonalidade e compra num cenário real. O risco inicial é o desbalanceamento da compra (**15,47%**), junto à possível indisponibilidade temporal de `PageValues`. A mesma base seguirá para a etapa de classificação.
 
 ## 1. Inspeção inicial
 
@@ -123,6 +123,10 @@ Defini “rara” como categoria com menos de **1% das 9.864 sessões**. A Tabel
 | `VisitorType` | 3 | `Returning_Visitor` (8.413; 85,29%) | 1 (`Other`) |
 | `Weekend` | 2 | `False` (7.542; 76,46%) | 0 |
 
+??? info "Frequências completas — todas as categorias"
+
+    --8<-- "docs/projects/eda/outputs/categorical_frequencies.txt"
+
 ![Figura 4 — Frequência de categorias selecionadas no treino](figures/figure_04_categorical.png)
 
 **Conclusão da Figura 4:** `Month` é sazonal e `VisitorType` dominada por recorrentes. `TrafficType` tem a maior cardinalidade (**19**) e oito códigos raros; `Browser` tem **13** e seis raros. Para não sobrecarregar a figura, ela mostra quatro features; a Tabela 2 e o CSV cobrem as sete. Códigos categóricos não devem entrar como números contínuos na rede.
@@ -192,6 +196,10 @@ O arquivo importável [preprocessing.py](code/preprocessing.py) define `build_pr
 
 Os [73 nomes produzidos pelo `ColumnTransformer`](outputs/feature_names.csv) estão versionados, em sua ordem, com prefixos `skew__`, `bounded__` e `cat__`; incluem `skew__ProductRelated_Duration`, `bounded__ExitRates`, `cat__Month_Nov`, `cat__TrafficType_20` e `cat__Weekend_True`. O CSV é a lista completa, não uma reconstrução manual. Uma categoria nova mantém o mesmo `shape` graças a `handle_unknown="ignore"`.
 
+??? info "Nomes e ordem das 73 features transformadas"
+
+    --8<-- "docs/projects/eda/outputs/feature_names.txt"
+
 Para reproduzir de um clone limpo: instale `requirements.txt` e execute `python docs/projects/eda/code/eda_analysis.py` na raiz. O script lê o CSV commitado, verifica o split e gera Figuras 1–11 e tabelas em `outputs/`. [test_preprocessing.py](code/test_preprocessing.py) testa o pipeline. Os dois blocos abaixo incorporam o **código-fonte executável** dos arquivos, não uma cópia independente.
 
 ??? example "Código completo — pipeline"
@@ -210,7 +218,7 @@ Para reproduzir de um clone limpo: instale `requirements.txt` e execute `python 
 
 Para modelagem futura: **(i)** compra é minoritária (**15,47%**, Figura 1), exigindo métricas da classe positiva; **(ii)** caudas e zeros nas durações (Tabela 1/Figura 2) justificam P99, `log1p` e padronização; **(iii)** mês e tipo de visitante variam nas taxas (Figura 7), mas categorias raras e ausência de validação temporal limitam extrapolação. Dois PCs retêm só **45,66%** (Figura 9); t-SNE/UMAP revelam estrutura local, não classes limpas. `PageValues` foi excluída por risco temporal (1B). **Não há resultado preditivo**, pois nenhum classificador foi treinado.
 
-**Próximo passo e limites:** obter **aprovação formal do dataset** antes da entrega, manter a base na classificação se aprovada, definir o instante da predição, ajustar modelos somente no treino/validação e reservar o teste para avaliação final. A prorrogação informada pelo aluno deve ser confirmada pelo canal oficial da disciplina; esta análise não a comprova. Fonte: Sakar & Kastro, *Online Shoppers Purchasing Intention Dataset* (UCI, 2018), DOI [10.24432/C5F88Q](https://doi.org/10.24432/C5F88Q), licença [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+**Próximo passo e limites:** manter esta base na classificação, definir o instante da predição, ajustar modelos somente no treino/validação e reservar o teste para avaliação final. O relatório registra a aprovação informada pelo integrante, mas não substitui eventual comprovante exigido pela disciplina. Fonte: Sakar & Kastro, *Online Shoppers Purchasing Intention Dataset* (UCI, 2018), DOI [10.24432/C5F88Q](https://doi.org/10.24432/C5F88Q), licença [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ### Resumo dos resultados
 

@@ -1,6 +1,6 @@
 # EDA — Redes Neurais e Deep Learning (Insper, 2026.2)
 
-Repositório público do projeto individual de Sérgio Carmelo Tôrres Filho, criado a partir do [template da disciplina](https://github.com/repo-classes/ann-dl). O [relatório do EDA](docs/projects/eda/index.md) explora o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset) e prepara um pipeline para classificação binária de `Revenue`. **A proposta do dataset ainda depende de aprovação do professor; sem aprovação, o EDA não é corrigido.** Nenhum modelo é treinado nesta etapa.
+Repositório do projeto individual de Sérgio Carmelo Tôrres Filho, criado a partir do [template da disciplina](https://github.com/repo-classes/ann-dl). O [relatório do EDA](docs/projects/eda/index.md) explora o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset) e prepara um pipeline para classificação binária de `Revenue`. O integrante informou em 04/11/2026 que o professor aprovou a base. Nenhum modelo é treinado nesta etapa.
 
 ## Reproduzir
 
