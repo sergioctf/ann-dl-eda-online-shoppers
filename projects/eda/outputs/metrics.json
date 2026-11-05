@@ -1,0 +1,655 @@
+{
+  "source_url": "https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset",
+  "source_csv_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "raw_shape": [
+    12330,
+    18
+  ],
+  "raw_numeric_features": 10,
+  "raw_categorical_features": 7,
+  "raw_target_counts": {
+    "False": 10422,
+    "True": 1908
+  },
+  "raw_missing_total": 0,
+  "raw_exact_duplicate_rows": 125,
+  "raw_duplicate_feature_rows": 125,
+  "invalid_counts": {
+    "negative_counts_or_durations": 0,
+    "negative_page_values": 0,
+    "rates_outside_0_1": 0,
+    "nonpositive_categorical_codes": 0,
+    "unknown_months": 0,
+    "blank_string_cells": 0
+  },
+  "excluded_features": [
+    "PageValues"
+  ],
+  "split": {
+    "strategy": "StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42), first fold",
+    "train_size": 9864,
+    "test_size": 2466,
+    "train_positive": 1526,
+    "test_positive": 382,
+    "shared_signatures": 0
+  },
+  "categorical_summary": {
+    "Month": {
+      "cardinality": 10,
+      "most_common": "May",
+      "most_common_count": 2655,
+      "most_common_pct": 26.916058394160586,
+      "rare_categories_below_1pct": []
+    },
+    "OperatingSystems": {
+      "cardinality": 8,
+      "most_common": "2",
+      "most_common_count": 5269,
+      "most_common_pct": 53.416463909164634,
+      "rare_categories_below_1pct": [
+        "8",
+        "6",
+        "5",
+        "7"
+      ]
+    },
+    "Browser": {
+      "cardinality": 13,
+      "most_common": "2",
+      "most_common_count": 6378,
+      "most_common_pct": 64.65936739659367,
+      "rare_categories_below_1pct": [
+        "3",
+        "13",
+        "7",
+        "12",
+        "11",
+        "9"
+      ]
+    },
+    "Region": {
+      "cardinality": 9,
+      "most_common": "1",
+      "most_common_count": 3802,
+      "most_common_pct": 38.544201135442016,
+      "rare_categories_below_1pct": []
+    },
+    "TrafficType": {
+      "cardinality": 19,
+      "most_common": "2",
+      "most_common_count": 3156,
+      "most_common_pct": 31.995133819951338,
+      "rare_categories_below_1pct": [
+        "9",
+        "7",
+        "15",
+        "19",
+        "14",
+        "18",
+        "16",
+        "17"
+      ]
+    },
+    "VisitorType": {
+      "cardinality": 3,
+      "most_common": "Returning_Visitor",
+      "most_common_count": 8413,
+      "most_common_pct": 85.28994322789943,
+      "rare_categories_below_1pct": [
+        "Other"
+      ]
+    },
+    "Weekend": {
+      "cardinality": 2,
+      "most_common": "False",
+      "most_common_count": 7542,
+      "most_common_pct": 76.45985401459853,
+      "rare_categories_below_1pct": []
+    }
+  },
+  "most_correlated_numeric_pair": {
+    "features": [
+      "Informational",
+      "Informational_Duration"
+    ],
+    "spearman_rho": 0.9503746833351115
+  },
+  "bounce_exit_spearman_rho": 0.6013717941002648,
+  "category_target_rates": {
+    "Month": [
+      {
+        "category": "Aug",
+        "count": 333,
+        "purchase_pct": 18.61861861861862
+      },
+      {
+        "category": "Dec",
+        "count": 1409,
+        "purchase_pct": 12.63307310149042
+      },
+      {
+        "category": "Feb",
+        "count": 137,
+        "purchase_pct": 1.4598540145985401
+      },
+      {
+        "category": "Jul",
+        "count": 350,
+        "purchase_pct": 14.857142857142858
+      },
+      {
+        "category": "June",
+        "count": 226,
+        "purchase_pct": 11.504424778761061
+      },
+      {
+        "category": "Mar",
+        "count": 1543,
+        "purchase_pct": 9.721322099805574
+      },
+      {
+        "category": "May",
+        "count": 2655,
+        "purchase_pct": 10.583804143126176
+      },
+      {
+        "category": "Nov",
+        "count": 2416,
+        "purchase_pct": 25.496688741721858
+      },
+      {
+        "category": "Oct",
+        "count": 440,
+        "purchase_pct": 21.136363636363637
+      },
+      {
+        "category": "Sep",
+        "count": 355,
+        "purchase_pct": 18.591549295774648
+      }
+    ],
+    "OperatingSystems": [
+      {
+        "category": "1",
+        "count": 2067,
+        "purchase_pct": 14.513788098693759
+      },
+      {
+        "category": "2",
+        "count": 5269,
+        "purchase_pct": 17.47959764661226
+      },
+      {
+        "category": "3",
+        "count": 2055,
+        "purchase_pct": 10.656934306569344
+      },
+      {
+        "category": "4",
+        "count": 375,
+        "purchase_pct": 17.866666666666667
+      },
+      {
+        "category": "5",
+        "count": 6,
+        "purchase_pct": 16.666666666666664
+      },
+      {
+        "category": "6",
+        "count": 13,
+        "purchase_pct": 7.6923076923076925
+      },
+      {
+        "category": "7",
+        "count": 4,
+        "purchase_pct": 25.0
+      },
+      {
+        "category": "8",
+        "count": 75,
+        "purchase_pct": 21.333333333333336
+      }
+    ],
+    "Browser": [
+      {
+        "category": "1",
+        "count": 1969,
+        "purchase_pct": 14.779075672930423
+      },
+      {
+        "category": "2",
+        "count": 6378,
+        "purchase_pct": 15.428033866415806
+      },
+      {
+        "category": "3",
+        "count": 81,
+        "purchase_pct": 4.938271604938271
+      },
+      {
+        "category": "4",
+        "count": 589,
+        "purchase_pct": 17.31748726655348
+      },
+      {
+        "category": "5",
+        "count": 354,
+        "purchase_pct": 19.2090395480226
+      },
+      {
+        "category": "6",
+        "count": 147,
+        "purchase_pct": 8.843537414965986
+      },
+      {
+        "category": "7",
+        "count": 40,
+        "purchase_pct": 12.5
+      },
+      {
+        "category": "8",
+        "count": 111,
+        "purchase_pct": 14.414414414414415
+      },
+      {
+        "category": "9",
+        "count": 1,
+        "purchase_pct": 0.0
+      },
+      {
+        "category": "10",
+        "count": 128,
+        "purchase_pct": 20.3125
+      },
+      {
+        "category": "11",
+        "count": 6,
+        "purchase_pct": 16.666666666666664
+      },
+      {
+        "category": "12",
+        "count": 6,
+        "purchase_pct": 33.33333333333333
+      },
+      {
+        "category": "13",
+        "count": 54,
+        "purchase_pct": 25.925925925925924
+      }
+    ],
+    "Region": [
+      {
+        "category": "1",
+        "count": 3802,
+        "purchase_pct": 16.201998947922146
+      },
+      {
+        "category": "2",
+        "count": 916,
+        "purchase_pct": 16.70305676855895
+      },
+      {
+        "category": "3",
+        "count": 1943,
+        "purchase_pct": 14.719505918682449
+      },
+      {
+        "category": "4",
+        "count": 964,
+        "purchase_pct": 14.315352697095435
+      },
+      {
+        "category": "5",
+        "count": 263,
+        "purchase_pct": 16.730038022813687
+      },
+      {
+        "category": "6",
+        "count": 635,
+        "purchase_pct": 14.173228346456693
+      },
+      {
+        "category": "7",
+        "count": 602,
+        "purchase_pct": 15.780730897009967
+      },
+      {
+        "category": "8",
+        "count": 335,
+        "purchase_pct": 11.641791044776118
+      },
+      {
+        "category": "9",
+        "count": 404,
+        "purchase_pct": 16.08910891089109
+      }
+    ],
+    "TrafficType": [
+      {
+        "category": "1",
+        "count": 1959,
+        "purchase_pct": 10.413476263399694
+      },
+      {
+        "category": "2",
+        "count": 3156,
+        "purchase_pct": 21.451204055766794
+      },
+      {
+        "category": "3",
+        "count": 1630,
+        "purchase_pct": 8.895705521472392
+      },
+      {
+        "category": "4",
+        "count": 860,
+        "purchase_pct": 14.883720930232558
+      },
+      {
+        "category": "5",
+        "count": 207,
+        "purchase_pct": 21.256038647342994
+      },
+      {
+        "category": "6",
+        "count": 355,
+        "purchase_pct": 12.394366197183098
+      },
+      {
+        "category": "7",
+        "count": 33,
+        "purchase_pct": 27.27272727272727
+      },
+      {
+        "category": "8",
+        "count": 283,
+        "purchase_pct": 27.208480565371023
+      },
+      {
+        "category": "9",
+        "count": 33,
+        "purchase_pct": 9.090909090909092
+      },
+      {
+        "category": "10",
+        "count": 358,
+        "purchase_pct": 20.949720670391063
+      },
+      {
+        "category": "11",
+        "count": 196,
+        "purchase_pct": 18.367346938775512
+      },
+      {
+        "category": "13",
+        "count": 569,
+        "purchase_pct": 6.32688927943761
+      },
+      {
+        "category": "14",
+        "count": 11,
+        "purchase_pct": 18.181818181818183
+      },
+      {
+        "category": "15",
+        "count": 29,
+        "purchase_pct": 0.0
+      },
+      {
+        "category": "16",
+        "count": 3,
+        "purchase_pct": 33.33333333333333
+      },
+      {
+        "category": "17",
+        "count": 1,
+        "purchase_pct": 0.0
+      },
+      {
+        "category": "18",
+        "count": 7,
+        "purchase_pct": 0.0
+      },
+      {
+        "category": "19",
+        "count": 12,
+        "purchase_pct": 0.0
+      },
+      {
+        "category": "20",
+        "count": 162,
+        "purchase_pct": 27.77777777777778
+      }
+    ],
+    "VisitorType": [
+      {
+        "category": "New_Visitor",
+        "count": 1376,
+        "purchase_pct": 25.072674418604652
+      },
+      {
+        "category": "Other",
+        "count": 75,
+        "purchase_pct": 20.0
+      },
+      {
+        "category": "Returning_Visitor",
+        "count": 8413,
+        "purchase_pct": 13.859503149887079
+      }
+    ],
+    "Weekend": [
+      {
+        "category": "False",
+        "count": 7542,
+        "purchase_pct": 14.86343145054362
+      },
+      {
+        "category": "True",
+        "count": 2322,
+        "purchase_pct": 17.441860465116278
+      }
+    ]
+  },
+  "page_values_by_target": {
+    "False": {
+      "mean": 2.0205813610176304,
+      "median": 0.0
+    },
+    "True": {
+      "mean": 27.12721438163499,
+      "median": 16.33919226
+    }
+  },
+  "outlier_capping": {
+    "quantile": 0.99,
+    "train_rows_affected": 391,
+    "per_feature": {
+      "Administrative": {
+        "cap": 14.0,
+        "affected_rows": 90
+      },
+      "Administrative_Duration": {
+        "cap": 825.3478065120007,
+        "affected_rows": 99
+      },
+      "Informational": {
+        "cap": 6.0,
+        "affected_rows": 67
+      },
+      "Informational_Duration": {
+        "cap": 724.5550000000012,
+        "affected_rows": 99
+      },
+      "ProductRelated": {
+        "cap": 223.3700000000008,
+        "affected_rows": 99
+      },
+      "ProductRelated_Duration": {
+        "cap": 8898.099285570073,
+        "affected_rows": 99
+      }
+    }
+  },
+  "pipeline": {
+    "train_shape": [
+      9864,
+      73
+    ],
+    "test_shape": [
+      2466,
+      73
+    ],
+    "feature_names": [
+      "skew__Administrative",
+      "skew__Administrative_Duration",
+      "skew__Informational",
+      "skew__Informational_Duration",
+      "skew__ProductRelated",
+      "skew__ProductRelated_Duration",
+      "bounded__BounceRates",
+      "bounded__ExitRates",
+      "bounded__SpecialDay",
+      "cat__Month_Aug",
+      "cat__Month_Dec",
+      "cat__Month_Feb",
+      "cat__Month_Jul",
+      "cat__Month_June",
+      "cat__Month_Mar",
+      "cat__Month_May",
+      "cat__Month_Nov",
+      "cat__Month_Oct",
+      "cat__Month_Sep",
+      "cat__OperatingSystems_1",
+      "cat__OperatingSystems_2",
+      "cat__OperatingSystems_3",
+      "cat__OperatingSystems_4",
+      "cat__OperatingSystems_5",
+      "cat__OperatingSystems_6",
+      "cat__OperatingSystems_7",
+      "cat__OperatingSystems_8",
+      "cat__Browser_1",
+      "cat__Browser_2",
+      "cat__Browser_3",
+      "cat__Browser_4",
+      "cat__Browser_5",
+      "cat__Browser_6",
+      "cat__Browser_7",
+      "cat__Browser_8",
+      "cat__Browser_9",
+      "cat__Browser_10",
+      "cat__Browser_11",
+      "cat__Browser_12",
+      "cat__Browser_13",
+      "cat__Region_1",
+      "cat__Region_2",
+      "cat__Region_3",
+      "cat__Region_4",
+      "cat__Region_5",
+      "cat__Region_6",
+      "cat__Region_7",
+      "cat__Region_8",
+      "cat__Region_9",
+      "cat__TrafficType_1",
+      "cat__TrafficType_2",
+      "cat__TrafficType_3",
+      "cat__TrafficType_4",
+      "cat__TrafficType_5",
+      "cat__TrafficType_6",
+      "cat__TrafficType_7",
+      "cat__TrafficType_8",
+      "cat__TrafficType_9",
+      "cat__TrafficType_10",
+      "cat__TrafficType_11",
+      "cat__TrafficType_13",
+      "cat__TrafficType_14",
+      "cat__TrafficType_15",
+      "cat__TrafficType_16",
+      "cat__TrafficType_17",
+      "cat__TrafficType_18",
+      "cat__TrafficType_19",
+      "cat__TrafficType_20",
+      "cat__VisitorType_New_Visitor",
+      "cat__VisitorType_Other",
+      "cat__VisitorType_Returning_Visitor",
+      "cat__Weekend_False",
+      "cat__Weekend_True"
+    ],
+    "train_nan": 0,
+    "test_nan": 0
+  },
+  "projection": {
+    "sample_size": 1500,
+    "sample_class_counts": [
+      1268,
+      232
+    ],
+    "explained_variance_ratio": [
+      0.3247516240919444,
+      0.13182501892971046,
+      0.09016105465139058,
+      0.07783385463626755,
+      0.04797484976579933,
+      0.039412672107049816,
+      0.028125574200355708,
+      0.02291088600348154,
+      0.02241080520123565,
+      0.021150491166733388
+    ],
+    "pc1_pc2_variance_pct": 45.65766430216549,
+    "top_loadings": {
+      "PC1": [
+        {
+          "feature": "skew__ProductRelated_Duration",
+          "loading": 0.40999282719838204
+        },
+        {
+          "feature": "bounded__ExitRates",
+          "loading": -0.3928418921730355
+        },
+        {
+          "feature": "skew__ProductRelated",
+          "loading": 0.39082713835902017
+        },
+        {
+          "feature": "skew__Administrative",
+          "loading": 0.3497952001556612
+        },
+        {
+          "feature": "skew__Administrative_Duration",
+          "loading": 0.3467862119244981
+        }
+      ],
+      "PC2": [
+        {
+          "feature": "skew__Informational",
+          "loading": 0.5246835336109998
+        },
+        {
+          "feature": "skew__Informational_Duration",
+          "loading": 0.5220157803061324
+        },
+        {
+          "feature": "bounded__BounceRates",
+          "loading": 0.40515630307364237
+        },
+        {
+          "feature": "bounded__ExitRates",
+          "loading": 0.359971447719523
+        },
+        {
+          "feature": "skew__ProductRelated_Duration",
+          "loading": -0.24938984057560498
+        }
+      ]
+    },
+    "tsne_perplexities": [
+      30,
+      80
+    ],
+    "umap_n_neighbors": [
+      15,
+      50
+    ]
+  }
+}
