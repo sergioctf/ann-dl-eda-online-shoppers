@@ -40,7 +40,7 @@ jobs:
 
       # pip
       - run: |
-          pip install -r requirements.txt
+          pip install -r requirements-site.txt
           
       # deploy
       - run: |

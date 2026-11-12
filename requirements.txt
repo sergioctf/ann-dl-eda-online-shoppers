@@ -1,14 +1,6 @@
-# --- site (mkdocs) --------------------------------------------------------
-# O MkDocs 2.0 remove o sistema de plugins e quebra todos os plugins abaixo, sem
-# caminho de migração. Sem este limite, o CI de todo aluno quebra no dia do lançamento.
-mkdocs<2
-mkdocs-material
-mkdocs-material-extensions
-mkdocs-minify-plugin
-mkdocs-glightbox
-mkdocs-git-authors-plugin
-mkdocs-git-revision-date-localized-plugin
-mkdocs-jupyter
+# Dependências completas para reproduzir EDA e classificação desde um clone.
+# O CI instala apenas requirements-site.txt para publicar o site rapidamente.
+-r requirements-site.txt
 
 # --- notebooks e scripts das entregas -------------------------------------
 ipykernel
