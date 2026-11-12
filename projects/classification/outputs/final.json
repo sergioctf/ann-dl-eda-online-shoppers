@@ -1,0 +1,408 @@
+{
+  "selected_id": "C3",
+  "selected_config": {
+    "id": "C3",
+    "hidden": [
+      64
+    ],
+    "lr": 0.001,
+    "weight_decay": 0.001,
+    "dropout": 0.0,
+    "parameters": 4737,
+    "best_epoch": 28,
+    "epochs_run": 43,
+    "best_val_loss": 0.9564597606658936,
+    "val_ap": 0.36911337461483396,
+    "val_f1_positive": 0.421978021978022,
+    "threshold": 0.5807610750198364
+  },
+  "outer_train_size": 9864,
+  "test_size": 2466,
+  "test_positive": 382,
+  "input_dim_final": 73,
+  "feature_names_final": [
+    "skew__Administrative",
+    "skew__Administrative_Duration",
+    "skew__Informational",
+    "skew__Informational_Duration",
+    "skew__ProductRelated",
+    "skew__ProductRelated_Duration",
+    "bounded__BounceRates",
+    "bounded__ExitRates",
+    "bounded__SpecialDay",
+    "cat__Month_Aug",
+    "cat__Month_Dec",
+    "cat__Month_Feb",
+    "cat__Month_Jul",
+    "cat__Month_June",
+    "cat__Month_Mar",
+    "cat__Month_May",
+    "cat__Month_Nov",
+    "cat__Month_Oct",
+    "cat__Month_Sep",
+    "cat__OperatingSystems_1",
+    "cat__OperatingSystems_2",
+    "cat__OperatingSystems_3",
+    "cat__OperatingSystems_4",
+    "cat__OperatingSystems_5",
+    "cat__OperatingSystems_6",
+    "cat__OperatingSystems_7",
+    "cat__OperatingSystems_8",
+    "cat__Browser_1",
+    "cat__Browser_2",
+    "cat__Browser_3",
+    "cat__Browser_4",
+    "cat__Browser_5",
+    "cat__Browser_6",
+    "cat__Browser_7",
+    "cat__Browser_8",
+    "cat__Browser_9",
+    "cat__Browser_10",
+    "cat__Browser_11",
+    "cat__Browser_12",
+    "cat__Browser_13",
+    "cat__Region_1",
+    "cat__Region_2",
+    "cat__Region_3",
+    "cat__Region_4",
+    "cat__Region_5",
+    "cat__Region_6",
+    "cat__Region_7",
+    "cat__Region_8",
+    "cat__Region_9",
+    "cat__TrafficType_1",
+    "cat__TrafficType_2",
+    "cat__TrafficType_3",
+    "cat__TrafficType_4",
+    "cat__TrafficType_5",
+    "cat__TrafficType_6",
+    "cat__TrafficType_7",
+    "cat__TrafficType_8",
+    "cat__TrafficType_9",
+    "cat__TrafficType_10",
+    "cat__TrafficType_11",
+    "cat__TrafficType_13",
+    "cat__TrafficType_14",
+    "cat__TrafficType_15",
+    "cat__TrafficType_16",
+    "cat__TrafficType_17",
+    "cat__TrafficType_18",
+    "cat__TrafficType_19",
+    "cat__TrafficType_20",
+    "cat__VisitorType_New_Visitor",
+    "cat__VisitorType_Other",
+    "cat__VisitorType_Returning_Visitor",
+    "cat__Weekend_False",
+    "cat__Weekend_True"
+  ],
+  "baselines_test": {
+    "dummy": {
+      "ap": 0.1549067315490673,
+      "roc_auc": 0.5,
+      "accuracy": 0.8450932684509327,
+      "f1_macro": 0.458021978021978,
+      "threshold": 0.5,
+      "confusion_matrix": [
+        [
+          2084,
+          0
+        ],
+        [
+          382,
+          0
+        ]
+      ],
+      "by_class": {
+        "0": {
+          "precision": 0.8450932684509327,
+          "recall": 1.0,
+          "f1": 0.916043956043956,
+          "support": 2084
+        },
+        "1": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 382
+        }
+      }
+    },
+    "logistic": {
+      "ap": 0.3178387643098229,
+      "roc_auc": 0.7477213574378712,
+      "accuracy": 0.7429034874290349,
+      "f1_macro": 0.608182966438109,
+      "threshold": 0.6135308742523193,
+      "confusion_matrix": [
+        [
+          1639,
+          445
+        ],
+        [
+          189,
+          193
+        ]
+      ],
+      "by_class": {
+        "0": {
+          "precision": 0.8966083150984683,
+          "recall": 0.786468330134357,
+          "f1": 0.8379345603271984,
+          "support": 2084
+        },
+        "1": {
+          "precision": 0.30250783699059564,
+          "recall": 0.5052356020942408,
+          "f1": 0.3784313725490196,
+          "support": 382
+        }
+      }
+    }
+  },
+  "mlp_runs": [
+    {
+      "seed": 42,
+      "metrics": {
+        "ap": 0.34818808676953245,
+        "roc_auc": 0.7632585844780978,
+        "accuracy": 0.7510137875101379,
+        "f1_macro": 0.6295641349587465,
+        "threshold": 0.5807610750198364,
+        "confusion_matrix": [
+          [
+            1632,
+            452
+          ],
+          [
+            162,
+            220
+          ]
+        ],
+        "by_class": {
+          "0": {
+            "precision": 0.9096989966555183,
+            "recall": 0.783109404990403,
+            "f1": 0.8416709644146467,
+            "support": 2084
+          },
+          "1": {
+            "precision": 0.3273809523809524,
+            "recall": 0.5759162303664922,
+            "f1": 0.4174573055028463,
+            "support": 382
+          }
+        }
+      }
+    },
+    {
+      "seed": 43,
+      "metrics": {
+        "ap": 0.358333697455112,
+        "roc_auc": 0.7712966405723991,
+        "accuracy": 0.7262773722627737,
+        "f1_macro": 0.6220480271817528,
+        "threshold": 0.5807610750198364,
+        "confusion_matrix": [
+          [
+            1543,
+            541
+          ],
+          [
+            134,
+            248
+          ]
+        ],
+        "by_class": {
+          "0": {
+            "precision": 0.9200954084675015,
+            "recall": 0.7404030710172744,
+            "f1": 0.820526455729859,
+            "support": 2084
+          },
+          "1": {
+            "precision": 0.31432192648922685,
+            "recall": 0.6492146596858639,
+            "f1": 0.42356959863364646,
+            "support": 382
+          }
+        }
+      }
+    },
+    {
+      "seed": 44,
+      "metrics": {
+        "ap": 0.3510858843293987,
+        "roc_auc": 0.7650498437358684,
+        "accuracy": 0.7104622871046229,
+        "f1_macro": 0.6054994071481,
+        "threshold": 0.5807610750198364,
+        "confusion_matrix": [
+          [
+            1512,
+            572
+          ],
+          [
+            142,
+            240
+          ]
+        ],
+        "by_class": {
+          "0": {
+            "precision": 0.9141475211608222,
+            "recall": 0.72552783109405,
+            "f1": 0.8089887640449438,
+            "support": 2084
+          },
+          "1": {
+            "precision": 0.2955665024630542,
+            "recall": 0.6282722513089005,
+            "f1": 0.4020100502512563,
+            "support": 382
+          }
+        }
+      }
+    }
+  ],
+  "mlp_ap_mean": 0.3525358895180144,
+  "mlp_ap_sd": 0.0052259200463742154,
+  "best_baseline_name": "logistic",
+  "best_baseline_ap": 0.3178387643098229,
+  "success_margin": 0.034697125208191515,
+  "success_reached": true,
+  "subgroups": [
+    {
+      "group": "New_Visitor",
+      "n": 318,
+      "positives": 77,
+      "errors": 111,
+      "error_rate": 0.3490566037735849,
+      "false_negative_rate": 0.22077922077922077,
+      "false_positive_rate": 0.3900414937759336
+    },
+    {
+      "group": "Other",
+      "n": 10,
+      "positives": 1,
+      "errors": 2,
+      "error_rate": 0.2,
+      "false_negative_rate": 1.0,
+      "false_positive_rate": 0.1111111111111111
+    },
+    {
+      "group": "Returning_Visitor",
+      "n": 2138,
+      "positives": 304,
+      "errors": 501,
+      "error_rate": 0.2343311506080449,
+      "false_negative_rate": 0.47368421052631576,
+      "false_positive_rate": 0.1946564885496183
+    }
+  ],
+  "worst_cases": [
+    {
+      "kind": "false_positive",
+      "csv_row_zero_based": 6015,
+      "true_label": 0,
+      "predicted_probability": 0.9621732234954834
+    },
+    {
+      "kind": "false_positive",
+      "csv_row_zero_based": 5959,
+      "true_label": 0,
+      "predicted_probability": 0.9609392881393433
+    },
+    {
+      "kind": "false_positive",
+      "csv_row_zero_based": 8378,
+      "true_label": 0,
+      "predicted_probability": 0.9467967748641968
+    },
+    {
+      "kind": "false_negative",
+      "csv_row_zero_based": 10531,
+      "true_label": 1,
+      "predicted_probability": 0.028887677937746048
+    },
+    {
+      "kind": "false_negative",
+      "csv_row_zero_based": 3581,
+      "true_label": 1,
+      "predicted_probability": 0.03335613012313843
+    },
+    {
+      "kind": "false_negative",
+      "csv_row_zero_based": 9429,
+      "true_label": 1,
+      "predicted_probability": 0.03356079012155533
+    }
+  ],
+  "permutation_importance": {
+    "reference_validation_ap": 0.36911337461483396,
+    "rows": [
+      {
+        "feature": "Month",
+        "ap_drop": 0.08168716606272386
+      },
+      {
+        "feature": "ExitRates",
+        "ap_drop": 0.08093187090617804
+      },
+      {
+        "feature": "ProductRelated_Duration",
+        "ap_drop": 0.06054012207601972
+      },
+      {
+        "feature": "VisitorType",
+        "ap_drop": 0.038552871332930616
+      },
+      {
+        "feature": "TrafficType",
+        "ap_drop": 0.02709574941121118
+      },
+      {
+        "feature": "Administrative",
+        "ap_drop": 0.024998214925578077
+      },
+      {
+        "feature": "Administrative_Duration",
+        "ap_drop": 0.019177609364530834
+      },
+      {
+        "feature": "BounceRates",
+        "ap_drop": 0.014628429299204826
+      },
+      {
+        "feature": "ProductRelated",
+        "ap_drop": 0.013231051330868826
+      },
+      {
+        "feature": "OperatingSystems",
+        "ap_drop": 0.012119697719355227
+      },
+      {
+        "feature": "Informational_Duration",
+        "ap_drop": 0.011349534364907266
+      },
+      {
+        "feature": "Region",
+        "ap_drop": 0.005476717363535721
+      },
+      {
+        "feature": "Informational",
+        "ap_drop": 0.004185598335741225
+      },
+      {
+        "feature": "Browser",
+        "ap_drop": 0.0037761975778575763
+      },
+      {
+        "feature": "SpecialDay",
+        "ap_drop": 0.00047038524964004846
+      },
+      {
+        "feature": "Weekend",
+        "ap_drop": -0.0017154266805511353
+      }
+    ]
+  }
+}
