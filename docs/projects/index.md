@@ -12,7 +12,7 @@
 ## Entregas
 
 - [1. EDA](eda/index.md): análise exploratória e pipeline, sem treinamento de modelo.
-- 2. Classificação: etapa seguinte, usando o mesmo dataset.
+- [2. Classificação](classification/index.md): MLP, baselines e avaliação no mesmo dataset.
 
 ## Registro de decisões
 

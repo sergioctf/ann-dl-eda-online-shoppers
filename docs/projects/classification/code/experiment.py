@@ -379,10 +379,14 @@ def make_figures(search_result, result, y_test, mlp_prob, curves):
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(7, 5))
-    for name, prob in [("MLP", mlp_prob), ("Logística", curves["logistic"]), ("Trivial", curves["dummy"])]:
+    for name, prob in [("MLP", mlp_prob), ("Logística", curves["logistic"])]:
         p, r, _ = precision_recall_curve(y_test, prob)
-        key = {"MLP": "mlp", "Logística": "logistic", "Trivial": "dummy"}[name]
+        key = {"MLP": "mlp", "Logística": "logistic"}[name]
         ax.plot(r, p, label=f"{name} (AP={average_precision_score(y_test, prob):.3f})", color=COLORS[key])
+    # Um classificador de escore constante não gera uma curva operacional:
+    # precision_recall_curve devolve só extremos, cuja interpolação seria falsa.
+    prevalence = float(np.mean(y_test))
+    ax.axhline(prevalence, linestyle="--", label=f"Trivial: prevalência={prevalence:.3f}", color=COLORS["dummy"])
     ax.set(title="Figura 3 — Precisão–recall no teste", xlabel="Recall da classe compra", ylabel="Precisão da classe compra", xlim=(0, 1), ylim=(0, 1))
     ax.legend()
     fig.tight_layout()

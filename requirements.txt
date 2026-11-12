@@ -18,3 +18,4 @@ matplotlib
 scikit-learn
 umap-learn>=0.5.9
 seaborn
+torch>=2.2

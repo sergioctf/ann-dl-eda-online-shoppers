@@ -145,4 +145,7 @@ nav:
   - Projeto:
     - projects/index.md
     - 1. EDA: projects/eda/index.md
+    - 2. Classificação:
+      - Relatório: projects/classification/index.md
+      - Protocolo pré-treino: projects/classification/PROTOCOL.md
   - Enunciado da disciplina ↗: https://insper.github.io/ann-dl/pt/2026.2/projects/eda/
