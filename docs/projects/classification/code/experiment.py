@@ -299,8 +299,6 @@ def permutation_importance(frame, sub_idx, val_idx, config, epochs, seed):
 
 
 def final():
-    if (OUTPUTS / "final.json").exists():
-        raise RuntimeError("final.json já existe; a avaliação única do teste não será repetida automaticamente")
     search_result = json.loads((OUTPUTS / "search.json").read_text(encoding="utf-8"))
     selected = search_result["configurations_ranked"][0]
     assert selected["id"] == search_result["selected_id"]
@@ -333,7 +331,11 @@ def final():
     importance = permutation_importance(frame, sub_idx, val_idx, selected, selected["best_epoch"], SEED)
     first_metrics = mlp_runs[0]["metrics"]
     aps = [run["metrics"]["ap"] for run in mlp_runs]
-    best_baseline_name = max(baselines, key=lambda k: baselines[k]["ap"])
+    # O comparador também é escolhido na validação, nunca pelo teste.
+    best_baseline_name = max(
+        search_result["baselines_validation"],
+        key=lambda k: search_result["baselines_validation"][k]["ap"],
+    )
     result = {
         "selected_id": selected["id"], "selected_config": selected,
         "outer_train_size": len(train_idx), "test_size": len(test_idx),
@@ -349,7 +351,20 @@ def final():
         "worst_cases": worst_cases(test_idx, y_test, first_prob, selected["threshold"]),
         "permutation_importance": importance,
     }
-    save_json(OUTPUTS / "final.json", result)
+    final_path = OUTPUTS / "final.json"
+    if final_path.exists():
+        # Num clone, o resultado original já foi entregue. Uma reprodução não
+        # pode reescrever silenciosamente a evidência; deve conferir a AP.
+        original = json.loads(final_path.read_text(encoding="utf-8"))
+        observed = [run["metrics"]["ap"] for run in result["mlp_runs"]]
+        expected = [run["metrics"]["ap"] for run in original["mlp_runs"]]
+        if not np.allclose(observed, expected, atol=1e-4, rtol=0):
+            raise RuntimeError(f"Reprodução divergente da AP publicada: {observed} vs. {expected}")
+        if not np.isclose(result["best_baseline_ap"], original["best_baseline_ap"], atol=1e-4, rtol=0):
+            raise RuntimeError("Reprodução divergente da AP do baseline")
+        print("Reprodução compatível com final.json; evidência original preservada.", flush=True)
+    else:
+        save_json(final_path, result)
     make_figures(search_result, result, y_test, first_prob, curves)
 
 
@@ -394,12 +409,12 @@ def make_figures(search_result, result, y_test, mlp_prob, curves):
     plt.close(fig)
 
     matrix = np.asarray(result["mlp_runs"][0]["metrics"]["confusion_matrix"])
-    fig, ax = plt.subplots(figsize=(5.5, 4.6))
+    fig, ax = plt.subplots(figsize=(7, 5))
     image = ax.imshow(matrix, cmap="Blues")
     for i in range(2):
         for j in range(2):
             ax.text(j, i, str(matrix[i, j]), ha="center", va="center", color="white" if matrix[i, j] > matrix.max() / 2 else "black")
-    ax.set(title="Figura 4 — Matriz de confusão no teste (semente 42)", xlabel="Classe prevista", ylabel="Classe verdadeira", xticks=[0, 1], yticks=[0, 1])
+    ax.set(title="Figura 4 — Matriz de confusão no teste\n(semente 42)", xlabel="Classe prevista", ylabel="Classe verdadeira", xticks=[0, 1], yticks=[0, 1])
     ax.set_xticklabels(["Não compra", "Compra"])
     ax.set_yticklabels(["Não compra", "Compra"])
     fig.colorbar(image, ax=ax, label="Número de sessões")
