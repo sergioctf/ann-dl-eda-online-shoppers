@@ -10,6 +10,8 @@ ai_use: "AI used for helping with de organization and code"
 
 A MLP melhorou a ordenação das sessões propensas a comprar, mas o resultado ainda não sustenta uma decisão automática de marketing. Sua *average precision* (AP) média no teste foi **0,3525 ± 0,0052**, contra **0,3178** da regressão logística: ganho absoluto de **0,0347**, acima do critério de **0,02** registrado antes dos treinos. Mesmo assim, com o limiar escolhido na validação, só **32,74%** das sessões sinalizadas como compra de fato compraram na execução de semente 42. Os números abaixo são descritivos deste conjunto, não uma garantia para tráfego futuro.
 
+Este projeto foi feito por **Sérgio Carmelo Tôrres Filho** com apoio de IA na organização do relatório e no código. A responsabilidade pelo conteúdo, pelas decisões e pela explicação dos resultados é do autor.
+
 ## Etapa 0 — Ponto de partida
 
 Continuamos a [análise exploratória](../eda/index.md) com o mesmo arquivo público [Online Shoppers Purchasing Intention — UCI](https://archive.ics.uci.edu/dataset/468/online%2Bshoppers%2Bpurchasing%2Bintention%2Bdataset), a mesma tarefa binária (`Revenue=True` significa compra) e a mesma primeira dobra de `StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)`. O agrupamento usa a assinatura das 17 features brutas para impedir que sessões idênticas apareçam em lados diferentes da divisão. São **9.864 linhas de treino externo** e **2.466 de teste**; a divisão interna do treino gerou **7.891 de subtreino** e **1.973 de validação**. A validação contém **305 compras (15,46%)**. O teste permaneceu fora da busca de configurações.
